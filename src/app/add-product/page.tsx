@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import React from "react";
 import prisma from "@/lib/db/prisma";
 import { redirect } from "next/navigation";
+import FormSubmitButton from "@/components/FormSubmitButton";
 
 export const metadata: Metadata = {
   title: "Add Product - Shopzinga",
@@ -56,9 +57,7 @@ const AddProductPage = () => {
           type="number"
           className="input-bordered input mb-3 w-full"
         />
-        <button type="submit" className="btn-primary btn-block btn">
-          Add Product
-        </button>
+        <FormSubmitButton className="btn-block">Add Product</FormSubmitButton>
       </form>
     </div>
   );
