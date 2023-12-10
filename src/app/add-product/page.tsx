@@ -1,14 +1,33 @@
 import { Metadata } from "next";
 import React from "react";
+import prisma from "@/lib/db/prisma";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Add Product - Shopzinga",
 };
 
+async function addProduct(formData: FormData) {
+  "use server";
+
+  const name = formData.get("name")?.toString();
+  const description = formData.get("description")?.toString();
+  const imageUrl = formData.get("imageUrl")?.toString();
+  const price = Number(formData.get("price") || 0);
+
+  if (!name || !description || !imageUrl || !price) {
+    throw new Error("Missing required fields");
+  }
+
+  await prisma.product.create({ data: { name, description, imageUrl, price } });
+
+  redirect("/");
+}
+
 const AddProductPage = () => {
   return (
     <div className="py-3">
-      <form>
+      <form action={addProduct}>
         <input
           required
           type="text"
@@ -33,6 +52,7 @@ const AddProductPage = () => {
           required
           name="price"
           placeholder="Price"
+          min={0}
           type="number"
           className="input-bordered input mb-3 w-full"
         />
