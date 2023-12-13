@@ -25,7 +25,6 @@ model Cart {
   Items     CartItem[]
   createsAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
-
   @@map("carts")
 }
 
