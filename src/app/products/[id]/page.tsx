@@ -5,6 +5,7 @@ import Image from "next/image";
 import PriceTag from "@/components/PriceTag";
 import { Metadata } from "next";
 import AddToCartButton from "./AddToCartButton";
+import { incrementProductQuantity } from "./actions";
 
 interface ProductPageProps {
   params: { id: string };
@@ -45,7 +46,10 @@ const ProductPage: FC<ProductPageProps> = async ({ params: { id } }) => {
         <h1 className="text-5xl font-bold">{product.name}</h1>
         <PriceTag price={product.price} className="mt-4" />
         <p className="py-6">{product.description}</p>
-        <AddToCartButton productId={id} />
+        <AddToCartButton
+          productId={id}
+          incrementProductQuantity={incrementProductQuantity}
+        />
       </div>
     </div>
   );
