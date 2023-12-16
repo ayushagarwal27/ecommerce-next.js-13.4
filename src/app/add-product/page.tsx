@@ -3,6 +3,8 @@ import React from "react";
 import prisma from "@/lib/db/prisma";
 import { redirect } from "next/navigation";
 import FormSubmitButton from "@/components/FormSubmitButton";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/route";
 
 export const metadata: Metadata = {
   title: "Add Product - Shopzinga",
@@ -10,6 +12,12 @@ export const metadata: Metadata = {
 
 async function addProduct(formData: FormData) {
   "use server";
+
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    redirect("/api/auth/signin?callbackUrl=/add-product");
+  }
 
   const name = formData.get("name")?.toString();
   const description = formData.get("description")?.toString();
@@ -25,7 +33,13 @@ async function addProduct(formData: FormData) {
   redirect("/");
 }
 
-const AddProductPage = () => {
+const AddProductPage = async () => {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    redirect("/api/auth/signin?callbackUrl=/add-product");
+  }
+
   return (
     <div className="py-3">
       <form action={addProduct}>
