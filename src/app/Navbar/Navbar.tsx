@@ -36,7 +36,7 @@ const Navbar = async () => {
             <div className="form-control">
               <input
                 type="text"
-                name="serachQuery"
+                name="searchQuery"
                 placeholder="Search"
                 className="input-bordered input w-full min-w-[100px]"
               />
