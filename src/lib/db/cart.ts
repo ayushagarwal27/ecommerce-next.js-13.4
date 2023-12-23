@@ -81,12 +81,19 @@ export async function mergeAnonymousCartIntoUserCart(userId: string) {
       const mergedCartItems = mergeCartItems(localCart.Items, userCart.Items);
 
       await tx.cartItem.deleteMany({ where: { cartId: userCart.id } });
-      await tx.cartItem.createMany({
-        data: mergedCartItems.map((item) => ({
-          productId: item.productId,
-          quantity: item.quantity,
-          cartId: userCart.id,
-        })),
+
+      await tx.cart.update({
+        where: { id: userCart.id },
+        data: {
+          Items: {
+            createMany: {
+              data: mergedCartItems.map((item) => ({
+                productId: item.productId,
+                quantity: item.quantity,
+              })),
+            },
+          },
+        },
       });
     } else {
       await tx.cart.create({
